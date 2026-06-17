@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeelShare — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="dashboard-layout">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="brand">
+        <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        FeelShare
+      </div>
+      <div class="navbar-right">
+        <!-- Notification Button -->
+        <button class="notif-btn" id="notifBtn" title="Notifications">
+          <i class="fa-solid fa-bell"></i>
+          <span class="badge d-none" id="notifBadge">0</span>
+        </button>
+        <!-- Profile Avatar -->
+        <div class="avatar-btn" id="profileAvatarBtn" title="View Profile">
+          <span id="avatarInitial">?</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- NOTIFICATION PANEL -->
+    <div class="notif-panel" id="notifPanel">
+      <div class="notif-panel-header">
+        <span>🔔 Notifications</span>
+        <button class="modal-close" id="markAllRead">Mark all read</button>
+      </div>
+      <div class="notif-list" id="notifList">
+        <div class="notif-empty">No notifications yet.</div>
+      </div>
+      <div class="notif-actions">
+        <button class="btn btn-outline btn-sm btn-full" id="closeNotifPanel">Close</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="dashboard-content">
+
+      <!-- Greeting -->
+      <div class="dashboard-greeting">
+        <h2 id="greetingText">Good day! 👋</h2>
+        <p id="greetingSubtext">How are you feeling today?</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="action-card" id="linkAccountBtn">
+          <div class="action-icon" style="background:#EDE9FF;color:#7C6FF7;">
+            <i class="fa-solid fa-link"></i>
+          </div>
+          <div class="action-label">Link Account</div>
+          <div class="action-sub">Connect with someone</div>
+        </div>
+        <div class="action-card" id="viewLinkedBtn">
+          <div class="action-icon" style="background:#FEF0EE;color:#F97B6B;">
+            <i class="fa-solid fa-people-arrows"></i>
+          </div>
+          <div class="action-label">Linked People</div>
+          <div class="action-sub" id="linkedCount">0 connected</div>
+        </div>
+        <div class="action-card" id="logoutBtn">
+          <div class="action-icon" style="background:#FFEBEE;color:#E53935;">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </div>
+          <div class="action-label">Log Out</div>
+          <div class="action-sub">See you soon!</div>
+        </div>
+      </div>
+
+      <!-- Linked Accounts Preview -->
+      <div class="linked-section">
+        <div class="section-title"><i class="fa-solid fa-heart" style="color:var(--accent);"></i> Linked People</div>
+        <div class="linked-accounts" id="linkedAccountsContainer">
+          <div class="empty-linked">
+            <i class="fa-solid fa-user-plus" style="font-size:1.5rem;margin-bottom:0.5rem;display:block;"></i>
+            Wala ka pang linked account.<br>
+            <small>I-click ang "Link Account" para mag-connect.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Send What You Feel -->
+      <div class="section-title">
+        <i class="fa-solid fa-face-smile" style="color:var(--primary);"></i>
+        Send What You Feel
+      </div>
+      <p class="text-sm text-muted mb-2">Piliin ang iyong nararamdaman at ipadala ito sa iyong linked person.</p>
+
+      <div class="emotion-grid">
+        <button class="emotion-btn em-happiness" data-emotion="Happiness" data-emoji="😊">
+          <span class="em-icon">😊</span>
+          <span class="em-label">Happiness</span>
+        </button>
+        <button class="emotion-btn em-sadness" data-emotion="Sadness" data-emoji="😢">
+          <span class="em-icon">😢</span>
+          <span class="em-label">Sadness</span>
+        </button>
+        <button class="emotion-btn em-anger" data-emotion="Anger" data-emoji="😡">
+          <span class="em-icon">😡</span>
+          <span class="em-label">Anger</span>
+        </button>
+        <button class="emotion-btn em-fear" data-emotion="Fear" data-emoji="😨">
+          <span class="em-icon">😨</span>
+          <span class="em-label">Fear</span>
+        </button>
+        <button class="emotion-btn em-surprise" data-emotion="Surprise" data-emoji="😲">
+          <span class="em-icon">😲</span>
+          <span class="em-label">Surprise</span>
+        </button>
+        <button class="emotion-btn em-disgust" data-emotion="Disgust" data-emoji="🤢">
+          <span class="em-icon">🤢</span>
+          <span class="em-label">Disgust</span>
+        </button>
+        <button class="emotion-btn em-trust" data-emotion="Trust" data-emoji="🤝">
+          <span class="em-icon">🤝</span>
+          <span class="em-label">Trust</span>
+        </button>
+        <button class="emotion-btn em-anticipation" data-emotion="Anticipation" data-emoji="🤩">
+          <span class="em-icon">🤩</span>
+          <span class="em-label">Anticipation</span>
+        </button>
+        <button class="emotion-btn em-secret" data-emotion="Secret" data-emoji="🔒" style="grid-column:1/-1;">
+          <span class="em-icon">🔒</span>
+          <span class="em-label" style="color:#455A64;">Secret / Serious Matter</span>
+        </button>
+      </div>
+
+      <!-- Recent Sent Feed -->
+      <div class="feed-section">
+        <div class="section-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--text-muted);"></i> Recently Sent</div>
+        <div id="sentFeed">
+          <div class="empty-linked" style="text-align:center;padding:1.5rem;">
+            <small>Wala ka pang naipadala.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Received Feed -->
+      <div class="feed-section">
+        <div class="section-title"><i class="fa-solid fa-inbox" style="color:var(--primary);"></i> Received Feelings</div>
+        <div id="receivedFeed">
+          <div class="empty-linked" style="text-align:center;padding:1.5rem;">
+            <small>Wala ka pang natanggap.</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== MODALS ===================== -->
+
+  <!-- Link Account Modal -->
+  <div class="modal-overlay" id="linkModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">🔗 Link Account</span>
+        <button class="modal-close" onclick="closeModal('linkModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="text-sm mb-2" style="color:var(--text-secondary);">Ilagay ang username ng taong gusto mong i-link. Makakatanggap siya ng link request.</p>
+      <div class="form-group">
+        <label for="linkTargetUsername">Username ng iba</label>
+        <div class="input-icon-wrap">
+          <i class="fa-solid fa-at icon"></i>
+          <input type="text" id="linkTargetUsername" class="form-control" placeholder="kanilangusername" />
+        </div>
+      </div>
+      <div id="linkTargetPreview" class="d-none" style="background:var(--primary-light);border-radius:var(--radius-md);padding:0.85rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem;">
+        <div style="width:42px;height:42px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;" id="linkPreviewAvatar">?</div>
+        <div>
+          <div style="font-weight:600;" id="linkPreviewName">-</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);" id="linkPreviewUser">-</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('linkModal')">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="searchUserBtn">Search User</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emotion Send Modal -->
+  <div class="modal-overlay" id="emotionModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="emotionModalTitle">Send Feeling</span>
+        <button class="modal-close" onclick="closeModal('emotionModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="emotion-modal-header" id="emotionModalHeader"></div>
+      <div class="form-group">
+        <label for="emotionMessage">Ipaliwanag ang iyong nararamdaman</label>
+        <textarea id="emotionMessage" class="emotion-textarea" placeholder="Ilagay dito kung bakit ka nakakaramdam nito..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Sino ang padadalhan?</label>
+        <select id="emotionRecipient" class="form-control">
+          <option value="">Piliin ang linked person...</option>
+        </select>
+      </div>
+      <div class="form-group mt-2">
+        <label>Enter PIN to Send</label>
+        <div class="pin-inputs" id="emotionPinInputs">
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-emotion-pin="0" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-emotion-pin="1" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-emotion-pin="2" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-emotion-pin="3" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('emotionModal')">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="sendEmotionBtn">
+          <i class="fa-solid fa-paper-plane"></i> Send
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secret / Serious Matter Modal -->
+  <div class="modal-overlay" id="secretModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">🔒 Secret / Serious Matter</span>
+        <button class="modal-close" onclick="closeModal('secretModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="secret-modal-header">
+        <div class="secret-title">🛡️ Safe Space</div>
+        <div class="secret-sub">Ang mensaheng ito ay para sa mga bagay na mahirap sabihin nang personal. Ligtas ito.</div>
+      </div>
+      <div class="form-group">
+        <label style="font-size:0.82rem;font-weight:600;">Piliin ang uri ng mensahe:</label>
+        <div class="secret-options">
+          <div class="secret-option" data-secret="Sexualized Experience">🚨 Sexualized Experience</div>
+          <div class="secret-option" data-secret="Suicidal Thoughts">💔 Suicidal Thoughts</div>
+          <div class="secret-option" data-secret="Serious Problem">😰 Serious Problem</div>
+          <div class="secret-option" data-secret="Secret Confession">🤫 Secret Confession</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="secretMessage">Ipaliwanag (optional)</label>
+        <textarea id="secretMessage" class="emotion-textarea" placeholder="Maaari kang magsulat ng higit pa dito..." style="min-height:90px;"></textarea>
+      </div>
+      <div class="resource-note">
+        <strong>💡 Tandaan:</strong>
+        Kung ikaw ay nasa krisis, mangyaring makipag-ugnayan sa <strong>Hopeline PH: 02-8804-4673</strong> o sa National Center for Mental Health: <strong>1553</strong>. Hindi ka nag-iisa.
+      </div>
+      <div class="form-group mt-2">
+        <label>Sino ang padadalhan?</label>
+        <select id="secretRecipient" class="form-control">
+          <option value="">Piliin ang linked person...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Enter PIN to Send</label>
+        <div class="pin-inputs" id="secretPinInputs">
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-secret-pin="0" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-secret-pin="1" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-secret-pin="2" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-secret-pin="3" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('secretModal')">Cancel</button>
+        <button class="btn btn-danger btn-sm" id="sendSecretBtn">
+          <i class="fa-solid fa-paper-plane"></i> Send Securely
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Linked People Modal -->
+  <div class="modal-overlay" id="linkedPeopleModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">👥 Linked People</span>
+        <button class="modal-close" onclick="closeModal('linkedPeopleModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="linkedPeopleList" style="max-height:360px;overflow-y:auto;"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm btn-full" onclick="closeModal('linkedPeopleModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script type="module" src="dashboard.js"></script>
+  <script>
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+    // Close notif panel on outside click
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('notifPanel');
+      const btn   = document.getElementById('notifBtn');
+      if (!panel.contains(e.target) && !btn.contains(e.target)) {
+        panel.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

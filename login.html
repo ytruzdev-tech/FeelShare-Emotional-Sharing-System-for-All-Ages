@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeelShare — Sign In</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-blob blob-1"></div>
+    <div class="auth-blob blob-2"></div>
+
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand">
+          <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+          FeelShare
+        </div>
+        <h1>Welcome back</h1>
+        <p>Sign in to continue sharing your feelings.</p>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-envelope icon"></i>
+            <input type="email" id="loginEmail" class="form-control" placeholder="juan@email.com" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-lock icon"></i>
+            <input type="password" id="loginPassword" class="form-control" placeholder="Your password" required />
+            <button type="button" class="toggle-pw" onclick="togglePw('loginPassword','loginEye')">
+              <i class="fa-solid fa-eye" id="loginEye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- PIN Entry -->
+        <div class="form-group">
+          <label>Enter Your PIN</label>
+          <div class="pin-inputs" id="loginPinInputs">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-login-pin="0" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-login-pin="1" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-login-pin="2" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-login-pin="3" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+          <span id="loginBtnText">Sign In</span>
+          <span id="loginSpinner" class="spinner d-none"></span>
+        </button>
+      </form>
+
+      <div class="text-center mt-2">
+        <a href="#" id="forgotPinLink" style="font-size:0.85rem;color:var(--text-muted);">
+          <i class="fa-solid fa-circle-question"></i> Forgot your PIN?
+        </a>
+      </div>
+
+      <div class="divider">or</div>
+
+      <button class="btn btn-google btn-full" id="googleLoginBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+        Continue with Google
+      </button>
+
+      <div class="text-center mt-3 text-sm">
+        Don't have an account? <a href="index.html">Create one</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot PIN Modal -->
+  <div class="modal-overlay" id="forgotPinModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">🔑 Reset PIN</span>
+        <button class="modal-close" onclick="closeForgotPin()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="text-sm mb-2" style="color:var(--text-secondary);">Enter your username to verify your identity. Then you can set a new PIN.</p>
+      <div class="form-group">
+        <label for="forgotUsername">Your Username</label>
+        <div class="input-icon-wrap">
+          <i class="fa-solid fa-at icon"></i>
+          <input type="text" id="forgotUsername" class="form-control" placeholder="juandelacruz" />
+        </div>
+      </div>
+      <div id="newPinSection" class="d-none">
+        <div class="form-group">
+          <label>New PIN</label>
+          <div class="pin-inputs" id="newPinInputs">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpin="0" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpin="1" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpin="2" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpin="3" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm New PIN</label>
+          <div class="pin-inputs" id="newPinConfirm">
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpinconfirm="0" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpinconfirm="1" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpinconfirm="2" />
+            <input type="password" class="pin-input" maxlength="1" inputmode="numeric" pattern="[0-9]" data-newpinconfirm="3" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeForgotPin()">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="forgotPinNextBtn" onclick="handleForgotPin()">Verify Username</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script type="module" src="auth.js"></script>
+  <script>
+    function togglePw(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye','fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash','fa-eye');
+      }
+    }
+
+    function setupPinInputs(attr) {
+      const inputs = document.querySelectorAll(`[${attr}]`);
+      inputs.forEach((input, i) => {
+        input.addEventListener('input', () => {
+          input.value = input.value.replace(/[^0-9]/g,'');
+          if (input.value && i < inputs.length - 1) inputs[i+1].focus();
+          input.classList.toggle('filled', !!input.value);
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !input.value && i > 0) inputs[i-1].focus();
+        });
+      });
+    }
+    setupPinInputs('data-login-pin');
+    setupPinInputs('data-newpin');
+    setupPinInputs('data-newpinconfirm');
+
+    document.getElementById('forgotPinLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('forgotPinModal').classList.add('active');
+    });
+    function closeForgotPin() {
+      document.getElementById('forgotPinModal').classList.remove('active');
+      document.getElementById('forgotUsername').value = '';
+      document.getElementById('newPinSection').classList.add('d-none');
+      document.getElementById('forgotPinNextBtn').textContent = 'Verify Username';
+      document.querySelectorAll('[data-newpin],[data-newpinconfirm]').forEach(i => { i.value=''; i.classList.remove('filled'); });
+    }
+
+    let forgotPinVerified = false;
+    async function handleForgotPin() {
+      if (!forgotPinVerified) {
+        // Handled in auth.js via window.verifyForgotUsername
+        if (window.verifyForgotUsername) await window.verifyForgotUsername();
+      } else {
+        if (window.saveForgotPin) await window.saveForgotPin();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeelShare — My Profile</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="profile-page">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+      <button class="btn btn-icon" onclick="history.back()" title="Back to Dashboard">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <div class="brand" style="font-size:1.15rem;">
+        <div class="brand-icon" style="width:30px;height:30px;font-size:0.85rem;"><i class="fa-solid fa-heart-pulse"></i></div>
+        My Profile
+      </div>
+      <div style="width:40px;"></div>
+    </nav>
+
+    <!-- Cover -->
+    <div class="profile-cover"></div>
+
+    <!-- Body -->
+    <div class="profile-body">
+
+      <!-- Avatar -->
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatarDisplay">
+          <span id="profileInitial">?</span>
+        </div>
+        <label class="profile-edit-avatar" for="avatarUpload" title="Change photo">
+          <i class="fa-solid fa-camera"></i>
+        </label>
+        <input type="file" id="avatarUpload" accept="image/*" style="display:none;" />
+      </div>
+
+      <div class="profile-name"><h2 id="displayName">Loading...</h2></div>
+      <div class="profile-username" id="displayUsername">@username</div>
+
+      <!-- Bio -->
+      <div class="profile-section">
+        <div class="profile-section-label">Bio</div>
+        <div class="profile-field">
+          <i class="fa-solid fa-pen field-icon"></i>
+          <div class="field-content">
+            <div class="field-label">About you</div>
+            <div class="field-value" id="displayBio">No bio yet.</div>
+          </div>
+          <button class="field-edit" onclick="openEditModal('bio')"><i class="fa-solid fa-pencil"></i></button>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="profile-section">
+        <div class="profile-section-label">Profile Details</div>
+        <div class="profile-field">
+          <i class="fa-solid fa-user field-icon"></i>
+          <div class="field-content">
+            <div class="field-label">Full Name</div>
+            <div class="field-value" id="displayFullName">-</div>
+          </div>
+          <button class="field-edit" onclick="openEditModal('name')"><i class="fa-solid fa-pencil"></i></button>
+        </div>
+        <div class="profile-field">
+          <i class="fa-solid fa-at field-icon"></i>
+          <div class="field-content">
+            <div class="field-label">Username</div>
+            <div class="field-value" id="displayUsernameField">-</div>
+          </div>
+        </div>
+        <div class="profile-field">
+          <i class="fa-solid fa-envelope field-icon"></i>
+          <div class="field-content">
+            <div class="field-label">Email</div>
+            <div class="field-value" id="displayEmail">-</div>
+          </div>
+        </div>
+        <div class="profile-field">
+          <i class="fa-solid fa-phone field-icon"></i>
+          <div class="field-content">
+            <div class="field-label">Phone Number</div>
+            <div class="field-value" id="displayPhone">Not set</div>
+          </div>
+          <button class="field-edit" onclick="openEditModal('phone')"><i class="fa-solid fa-pencil"></i></button>
+        </div>
+      </div>
+
+      <!-- Linked Accounts -->
+      <div class="profile-section">
+        <div class="profile-section-label">Linked People</div>
+        <div id="profileLinkedList">
+          <div class="empty-linked"><small>No linked accounts yet.</small></div>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="profile-section">
+        <div class="profile-section-label">Account</div>
+        <button class="btn btn-outline btn-full" onclick="window.location.href='dashboard.html'" style="margin-bottom:0.5rem;">
+          <i class="fa-solid fa-house"></i> Back to Dashboard
+        </button>
+        <button class="btn btn-danger btn-full" id="logoutBtn">
+          <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Settings FAB -->
+  <button class="profile-settings-btn" id="settingsBtn" title="Settings">
+    <i class="fa-solid fa-gear"></i>
+  </button>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Edit Field Modal -->
+  <div class="modal-overlay" id="editFieldModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="editFieldTitle">Edit</span>
+        <button class="modal-close" onclick="closeModal('editFieldModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="editFieldContent"></div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('editFieldModal')">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="saveFieldBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">⚙️ Settings</span>
+        <button class="modal-close" onclick="closeModal('settingsModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="text-sm mb-2" style="color:var(--text-secondary);">Change your PIN. Ilagay muna ang iyong kasalukuyang PIN.</p>
+
+      <div class="form-group">
+        <label>Current PIN</label>
+        <div class="pin-inputs" id="currentPinInputs">
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-curr-pin="0" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-curr-pin="1" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-curr-pin="2" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-curr-pin="3" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>New PIN</label>
+        <div class="pin-inputs">
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin="0" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin="1" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin="2" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin="3" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Confirm New PIN</label>
+        <div class="pin-inputs">
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin-confirm="0" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin-confirm="1" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin-confirm="2" />
+          <input type="password" class="pin-input" maxlength="1" inputmode="numeric" data-new-pin-confirm="3" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('settingsModal')">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="changePinBtn">Change PIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script type="module" src="profile.js"></script>
+  <script>
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function openModal(id)  { document.getElementById(id).classList.add('active'); }
+
+    // Setup PIN inputs
+    ['data-curr-pin','data-new-pin','data-new-pin-confirm'].forEach(attr => {
+      const inputs = document.querySelectorAll(`[${attr}]`);
+      inputs.forEach((input, i) => {
+        input.addEventListener('input', () => {
+          input.value = input.value.replace(/[^0-9]/g,'');
+          if (input.value && i < inputs.length - 1) inputs[i+1].focus();
+          input.classList.toggle('filled', !!input.value);
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !input.value && i > 0) inputs[i-1].focus();
+        });
+      });
+    });
+
+    document.getElementById('settingsBtn').addEventListener('click', () => openModal('settingsModal'));
+  </script>
+</body>
+</html>
